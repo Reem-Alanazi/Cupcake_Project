@@ -10,16 +10,17 @@ import java.util.*
 class OrderViewModel : ViewModel() {
 
     //"LiveData",so properties can be observable and UI can be updated when the source data in the view model changes.
-    private val _quantity = MutableLiveData<Int>(0)
+    // Than I remove the initial values from the declaration of the properties in the class.
+    private val _quantity = MutableLiveData<Int>()
     val quantity: LiveData<Int> = _quantity
 
-    private val _flavor = MutableLiveData<String>("")
+    private val _flavor = MutableLiveData<String>()
     val flavor: LiveData<String> = _flavor
 
-    private val _date = MutableLiveData<String>("")
+    private val _date = MutableLiveData<String>()
     val date: LiveData<String> = _date
 
-    private val _price = MutableLiveData<Double>(0.0)
+    private val _price = MutableLiveData<Double>()
     val price: LiveData<Double> = _price
     //?
     val dateOptions: List<String> = getPickupOptions()
@@ -56,6 +57,23 @@ class OrderViewModel : ViewModel() {
         }
         return option
     }
+
+    // To Set initial values for the order
+    init {
+        resetOrder()
+    }
+
+    //reset the MutableLiveData properties in the view model
+    fun resetOrder(){
+
+     _quantity.value=0
+     _flavor.value = ""
+     _date.value = dateOptions[0]
+     _price.value = 0.0
+    }
+
+
+
 
 
 }
