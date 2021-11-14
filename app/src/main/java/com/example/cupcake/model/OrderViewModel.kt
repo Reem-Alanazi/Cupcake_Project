@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 //need to import these
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import java.text.SimpleDateFormat
+import java.util.*
 
 class OrderViewModel : ViewModel() {
 
@@ -19,6 +21,8 @@ class OrderViewModel : ViewModel() {
 
     private val _price = MutableLiveData<Double>(0.0)
     val price: LiveData<Double> = _price
+    //?
+    val dateOptions: List<String> = getPickupOptions()
 
     // write "_" before variable so make it just readable not editable out this class
     fun setQuantity(numberCupcakes: Int) {
@@ -37,6 +41,22 @@ class OrderViewModel : ViewModel() {
     fun hasNoFlavor():Boolean{
        return _flavor.value.isNullOrBlank()
     }
+
+    // create and return the list of pickup dates
+    private fun getPickupOptions(): List<String>{
+        val option = mutableListOf<String>()
+        //"E MMM d", and the locale. In the pattern string, E stands for day name in week and it parses to "Tue Dec 10".
+        val formatter = SimpleDateFormat("E MMM d", Locale.getDefault())
+        //this variable will contain the current date and time
+        val calendar = Calendar.getInstance()
+        // ?
+        repeat(4){
+           option.add(formatter.format(calendar.time))
+            calendar.add(Calendar.DATE,1)
+        }
+        return option
+    }
+
 
 }
 
