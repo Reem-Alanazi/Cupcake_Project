@@ -52,6 +52,8 @@ class PickupFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding?.apply {
+            //you can access the object without its name.
+            viewModel = sharedViewModel
             nextButton.setOnClickListener { goToNextScreen() }
         }
     }
