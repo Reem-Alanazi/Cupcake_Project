@@ -56,9 +56,9 @@ class SummaryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding?.apply {
-            //you can access the object without its name.
+            lifecycleOwner = viewLifecycleOwner
             viewModel = sharedViewModel
-            sendButton.setOnClickListener { sendOrder() }
+            summaryFragment = this@SummaryFragment
         }
     }
 
