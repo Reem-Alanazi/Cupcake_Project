@@ -4,8 +4,12 @@ import androidx.lifecycle.ViewModel
 //need to import these
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
+
+private const val PRICE_PER_CUPCAKE = 2.00
 
 class OrderViewModel : ViewModel() {
 
@@ -20,15 +24,17 @@ class OrderViewModel : ViewModel() {
     private val _date = MutableLiveData<String>()
     val date: LiveData<String> = _date
 
+    //The formatted price will be a string with a currency symbol such as a ‘$'. You will fix the initialization error
+    //se Transformations.map() to initialize the new variable,
     private val _price = MutableLiveData<Double>()
-    val price: LiveData<Double> = _price
+    val price: LiveData<String> = Transformations.map(_price){
+        NumberFormat.getCurrencyInstance().format(it)
+    }
     //?
     val dateOptions: List<String> = getPickupOptions()
 
     // write "_" before variable so make it just readable not editable out this class
-    fun setQuantity(numberCupcakes: Int) {
-        _quantity.value = numberCupcakes
-    }
+
 
     fun setFlavor(desiredFlavor: String) {
         _flavor.value = desiredFlavor
@@ -37,6 +43,7 @@ class OrderViewModel : ViewModel() {
     fun setDate(pickupDate: String) {
         _date.value = pickupDate
     }
+
 
     // heck if the flavor for the order has been set or not
     fun hasNoFlavor():Boolean{
@@ -72,6 +79,22 @@ class OrderViewModel : ViewModel() {
      _price.value = 0.0
     }
 
+
+    //update the price variable when the quantity is set.
+    fun setQuantity(numberCupcakes:Int) {
+        _quantity.value = numberCupcakes
+        updatePrice()
+    }
+
+    //helper method to calculate the price
+    private fun updatePrice(){
+
+        _price.value = (quantity.value ?: 0) * PRICE_PER_CUPCAKE
+
+        /*  The elvis operator (?:) means that if the expression on the left is not null,
+          then use it. Otherwise if the expression on the left is null,
+          then use the expression to the right of the elvis operator (which is 0 in this case). */
+    }
 
 
 
